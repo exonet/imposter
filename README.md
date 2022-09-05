@@ -1,5 +1,5 @@
 # imposter
-Tool to fake GitHub wehbook events.
+Tool to fake GitHub webhook events.
 
 ## Setup
 - Install dependencies with `composer install`.
