@@ -24,4 +24,4 @@ jobs:
           key: db
 
       - name: Check for vulnerabilities
-        uses: symfonycorp/security-checker-action@v3
+        uses: symfonycorp/security-checker-action@v4
