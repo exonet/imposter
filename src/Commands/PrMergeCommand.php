@@ -101,7 +101,7 @@ class PrMergeCommand extends Command
 
         // Construct and execute the request.
         $client = new Client();
-        $client->post(
+        $response = $client->post(
             $_ENV['DESTINATION_URL'],
             [
                 'body' => $payload,
@@ -112,7 +112,12 @@ class PrMergeCommand extends Command
                 ],
             ]
         );
-
+        if ($input->getOption('verbose')) {
+            $output->writeln('Response:');
+            $output->writeLn('  Status: '.$response->getStatusCode());
+            $output->writeLn('  Body: '.$response->getBody()->getContents());
+            $output->writeLn('');
+        }
         $output->writeLn('Done.');
 
         return 0;

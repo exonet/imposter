@@ -56,6 +56,13 @@ class MergeLatestTagCommand extends PrMergeCommand
             ]
         );
 
+        if ($input->getOption('verbose')) {
+            $output->writeln('Response:');
+            $output->writeLn('  Status: '.$response->getStatusCode());
+            $output->writeLn('  Body: '.$response->getBody()->getContents());
+            $output->writeLn('');
+        }
+
         $release = json_decode($response->getBody(), true);
 
         return $this->call($input, $output, [

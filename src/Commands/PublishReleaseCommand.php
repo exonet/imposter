@@ -81,7 +81,7 @@ class PublishReleaseCommand extends Command
 
         // Construct and execute the request.
         $client = new Client();
-        $client->post(
+        $response = $client->post(
             $_ENV['DESTINATION_URL'],
             [
                 'body' => $payload,
@@ -92,6 +92,13 @@ class PublishReleaseCommand extends Command
                 ],
             ]
         );
+
+        if ($input->getOption('verbose')) {
+            $output->writeln('Response:');
+            $output->writeLn('  Status: '.$response->getStatusCode());
+            $output->writeLn('  Body: '.$response->getBody()->getContents());
+            $output->writeLn('');
+        }
 
         $output->writeLn('Done.');
 
