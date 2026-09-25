@@ -2,7 +2,6 @@
 
 namespace Spoof\Tools;
 
-use Exception;
 use GuzzleHttp\Client;
 
 /**
@@ -100,7 +99,7 @@ class GitHub
      * @param callable $tick        Called once per attempt, for progress output.
      * @param int      $attempts    How many times to look, once every 15 seconds.
      *
-     * @throws Exception When the build failed or never delivered.
+     * @throws \Exception When the build failed or never delivered.
      */
     public function awaitPackage(string $application, string $sha, callable $tick, int $attempts = 60): void
     {
@@ -117,12 +116,12 @@ class GitHub
             $runs = $this->get(sprintf('actions/runs?head_sha=%s&event=workflow_dispatch&per_page=5', $sha));
             foreach ($runs['workflow_runs'] as $run) {
                 if ($run['status'] === 'completed' && $run['conclusion'] !== 'success') {
-                    throw new Exception(sprintf('The build failed: %s', $run['html_url']));
+                    throw new \Exception(sprintf('The build failed: %s', $run['html_url']));
                 }
             }
         }
 
-        throw new Exception(sprintf('No package for %s at %s after %d minutes.', $application, substr($sha, 0, 7), (int) ($attempts / 4)));
+        throw new \Exception(sprintf('No package for %s at %s after %d minutes.', $application, substr($sha, 0, 7), (int) ($attempts / 4)));
     }
 
     /**
