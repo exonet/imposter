@@ -17,6 +17,19 @@ php spoof merge styxit/imposter myBranch develop
 
 This will fake an event as if branch "myBranch" was merged into branch "develop", for repository "styxit/imposter".
 
+#### Monorepos: deploying a branch that has no package
+A repository holding more than one application deploys from a package CI builds, and that package
+belongs to a commit rather than to a branch. Name the application and imposter takes care of it:
+
+```
+php spoof merge exonet/frontend myBranch dev --app=admin
+```
+
+This resolves the branch to its current commit, checks whether CI already left a package for that
+commit, asks CI to build one when it did not, waits for it, and only then spoofs the event, with
+the commit in it instead of the branch name. Without `--app` the command behaves exactly as it
+always has.
+
 ### Merge event based on the latest tag
 To spoof a pull requeste merge event based on the latest tag, use:
 ```
@@ -43,4 +56,6 @@ This is the url to which the event is POST-ed. Usually your own webhook.
 The secret string you provided when setting up the webhook at GitHub. This used to sign your request.
 
 ##### GITHUB_TOKEN
-The auth token used to fetch the latest release for a given repository from the Github API.
+The auth token used to fetch the latest release for a given repository from the Github API, and,
+with `--app`, to look up packages and start a build. That last one needs write access to Actions;
+reading is enough without it.
